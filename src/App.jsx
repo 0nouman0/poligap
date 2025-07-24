@@ -12,6 +12,7 @@ import LoginPage from './components/LoginPage';
 import UserProfile from './components/UserProfile';
 import AnalysisHistory from './components/AnalysisHistory';
 import AnalysisResults from './components/AnalysisResults';
+import PricingPage from './components/PricingPage';
 import NavigationHeader from './components/NavigationHeader';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -40,6 +41,8 @@ function App() {
         return <LandingPage onNavigate={navigate} />;
       case 'login':
         return <LoginPage onNavigate={navigate} />;
+      case 'pricing':
+        return <PricingPage onNavigate={navigate} />;
       case 'profile':
         return (
           <ProtectedRoute>

@@ -53,6 +53,12 @@ function LandingPage({ onNavigate }) {
                   Get Started Free
                 </button>
                 <button
+                  onClick={() => onNavigate('pricing')}
+                  className="bg-osmo-purple text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                >
+                  View Pricing
+                </button>
+                <button
                   onClick={() => onNavigate('compliances')}
                   className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
                 >

@@ -62,6 +62,16 @@ function NavigationHeader({ currentPage, onNavigate }) {
               History
             </button>
             <button
+              onClick={() => onNavigate('pricing')}
+              className={`font-semibold transition-colors ${
+                currentPage === 'pricing' 
+                  ? 'text-osmo-purple' 
+                  : 'text-gray-600 hover:text-osmo-purple'
+              }`}
+            >
+              Pricing
+            </button>
+            <button
               onClick={() => onNavigate('compliances')}
               className={`font-semibold transition-colors ${
                 currentPage === 'compliances' 
