@@ -139,7 +139,7 @@ Organization Details:
 - Risk Appetite: ${formData.riskAppetite}
 - Existing Controls: ${formData.existingControls || 'Not specified'}
 
-Please provide:
+Please provide a detailed risk assessment with:
 1. Risk Score (1-100) with detailed breakdown
 2. Top 5 compliance risks specific to this organization
 3. Recommended compliance frameworks and standards
@@ -151,7 +151,18 @@ Please provide:
 Format the response clearly with sections and actionable recommendations.`;
 
       const result = await analyzeDocument(prompt);
-      setAssessment(result);
+      console.log('Assessment result:', result);
+      console.log('Assessment result type:', typeof result);
+      console.log('Assessment result keys:', result && typeof result === 'object' ? Object.keys(result) : 'N/A');
+      
+      // Handle both string and object responses
+      if (typeof result === 'string') {
+        setAssessment(result);
+      } else if (result && typeof result === 'object') {
+        setAssessment(result);
+      } else {
+        setAssessment('Assessment completed successfully, but no detailed results were returned.');
+      }
     } catch (error) {
       console.error('Assessment error:', error);
       setAssessment('Error conducting risk assessment. Please try again.');
@@ -464,11 +475,145 @@ Format the response clearly with sections and actionable recommendations.`;
                   </button>
                 </div>
                 
-                <div className="bg-osmo-gray/30 rounded-osmo p-6 border border-gray-200">
-                  <pre className="text-osmo-dark whitespace-pre-wrap font-mono text-sm leading-relaxed">
-                    {assessment}
-                  </pre>
-                </div>
+                {typeof assessment === 'string' ? (
+                  <div className="bg-osmo-gray/30 rounded-osmo p-6 border border-gray-200">
+                    <pre className="text-osmo-dark whitespace-pre-wrap font-mono text-sm leading-relaxed">
+                      {assessment}
+                    </pre>
+                  </div>
+                ) : assessment && typeof assessment === 'object' ? (
+                  <div className="space-y-6">
+                    {/* Summary Section */}
+                    {assessment.summary && (
+                      <div className="bg-gradient-to-r from-osmo-purple/10 to-osmo-green/10 rounded-osmo p-6 border border-osmo-purple/20">
+                        <h3 className="text-xl font-black text-osmo-dark mb-3">Executive Summary</h3>
+                        <p className="text-osmo-dark leading-relaxed">{assessment.summary}</p>
+                      </div>
+                    )}
+
+                    {/* Score Overview */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-white rounded-osmo p-6 shadow-osmo border border-gray-200">
+                        <h4 className="text-lg font-black text-osmo-dark mb-3">Overall Score</h4>
+                        <div className="text-3xl font-black text-osmo-purple mb-2">
+                          {assessment.overallScore || 'N/A'}%
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div 
+                            className="bg-osmo-purple h-3 rounded-full transition-all duration-500"
+                            style={{ width: `${assessment.overallScore || 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {assessment.industryBenchmark && (
+                        <div className="bg-white rounded-osmo p-6 shadow-osmo border border-gray-200">
+                          <h4 className="text-lg font-black text-osmo-dark mb-3">Industry Benchmark</h4>
+                          <div className="text-sm text-gray-600 mb-2">
+                            Your Score vs Industry Average ({assessment.industryBenchmark.industry})
+                          </div>
+                          <div className="flex items-center space-x-4">
+                            <div className="flex-1">
+                              <div className="text-lg font-bold text-osmo-purple">
+                                {assessment.industryBenchmark.userScore}%
+                              </div>
+                              <div className="text-sm text-gray-500">Your Score</div>
+                            </div>
+                            <div className="flex-1">
+                              <div className="text-lg font-bold text-gray-600">
+                                {assessment.industryBenchmark.industryAverage}%
+                              </div>
+                              <div className="text-sm text-gray-500">Industry Avg</div>
+                            </div>
+                          </div>
+                          <div className="mt-2 text-sm font-semibold text-osmo-green">
+                            {assessment.industryBenchmark.comparison}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Gaps and Issues */}
+                    {assessment.gaps && assessment.gaps.length > 0 && (
+                      <div className="bg-white rounded-osmo p-6 shadow-osmo border border-gray-200">
+                        <h4 className="text-lg font-black text-osmo-dark mb-4">
+                          Identified Gaps ({assessment.totalGaps || assessment.gaps.length})
+                        </h4>
+                        <div className="space-y-4">
+                          {assessment.gaps.slice(0, 5).map((gap, index) => (
+                            <div key={index} className="border-l-4 border-red-400 bg-red-50 p-4 rounded-r-osmo">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <h5 className="font-bold text-osmo-dark mb-1">{gap.issue || gap.title || `Gap ${index + 1}`}</h5>
+                                  <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
+                                    <span className={`px-2 py-1 rounded-osmo font-bold ${
+                                      gap.severity === 'High' || gap.severity === 'Critical' 
+                                        ? 'bg-red-200 text-red-800'
+                                        : gap.severity === 'Medium'
+                                        ? 'bg-yellow-200 text-yellow-800'
+                                        : 'bg-green-200 text-green-800'
+                                    }`}>
+                                      {gap.severity || 'Medium'}
+                                    </span>
+                                    {gap.framework && <span>{gap.framework}</span>}
+                                    {gap.timeframe && <span>⏱️ {gap.timeframe}</span>}
+                                  </div>
+                                  {gap.remediation && (
+                                    <p className="text-sm text-osmo-dark">{gap.remediation}</p>
+                                  )}
+                                </div>
+                                {gap.currentScore !== undefined && gap.targetScore !== undefined && (
+                                  <div className="ml-4 text-right">
+                                    <div className="text-sm text-gray-500">Score</div>
+                                    <div className="font-bold text-osmo-dark">
+                                      {gap.currentScore}% → {gap.targetScore}%
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                          {assessment.gaps.length > 5 && (
+                            <div className="text-center pt-4">
+                              <button className="text-osmo-purple font-semibold hover:underline">
+                                View {assessment.gaps.length - 5} more gaps...
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Prioritized Actions */}
+                    {assessment.prioritizedActions && assessment.prioritizedActions.length > 0 && (
+                      <div className="bg-white rounded-osmo p-6 shadow-osmo border border-gray-200">
+                        <h4 className="text-lg font-black text-osmo-dark mb-4">Priority Actions</h4>
+                        <div className="space-y-3">
+                          {assessment.prioritizedActions.slice(0, 5).map((action, index) => (
+                            <div key={index} className="flex items-center space-x-4 p-3 bg-osmo-gray/20 rounded-osmo">
+                              <div className="w-8 h-8 bg-osmo-purple text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                {action.priority || index + 1}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-semibold text-osmo-dark">{action.title || action.action}</div>
+                                {action.framework && (
+                                  <div className="text-sm text-gray-600">{action.framework}</div>
+                                )}
+                              </div>
+                              {action.estimatedEffort && (
+                                <div className="text-sm text-gray-500">{action.estimatedEffort}</div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-osmo-gray/30 rounded-osmo p-6 border border-gray-200">
+                    <p className="text-osmo-dark">No assessment results available.</p>
+                  </div>
+                )}
               </div>
             </div>
           )}
