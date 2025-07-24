@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DocumentUpload from './DocumentUpload';
 import AnalysisResults from './AnalysisResults';
 import { analyzeDocument } from '../lib/gemini';
+import { authAPI } from '../lib/neondb';
 
 function PolicyAnalyzer({ onNavigate, onDocumentUpload }) {
   const [analysis, setAnalysis] = useState(null);
@@ -92,6 +93,90 @@ function PolicyAnalyzer({ onNavigate, onDocumentUpload }) {
       });
       
       setAnalysis(results);
+      
+      // Save analysis to database (only if user is authenticated)
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        setProgress('💾 Saving analysis to history...');
+        
+        try {
+          const gapsFound = results.gaps?.length || 0;
+          const complianceScore = results.overallScore || results.overallCompliance || 0;
+          
+          console.log('Compliance Score Calculation:', {
+            overallScore: results.overallScore,
+            overallCompliance: results.overallCompliance,
+            finalScore: complianceScore,
+            resultsKeys: Object.keys(results)
+          });
+          
+          const analysisData = {
+            document_name: file?.name || 'Unknown Document',
+            document_type: file?.type || 'application/pdf',
+            industry: industry || 'general',
+            frameworks: frameworks || [],
+            analysis_results: results,
+            gaps_found: gapsFound,
+            compliance_score: complianceScore
+          };
+
+          // Validate required fields before sending
+          if (!analysisData.document_name || !analysisData.analysis_results) {
+            throw new Error(`Missing required fields: document_name=${!!analysisData.document_name}, analysis_results=${!!analysisData.analysis_results}`);
+          }
+
+          // Additional validation for analysis_results structure
+          if (typeof analysisData.analysis_results !== 'object' || analysisData.analysis_results === null) {
+            throw new Error('Analysis results must be a valid object');
+          }
+
+          // Debug: Log the data being sent
+          console.log('Saving analysis data:', {
+            document_name: analysisData.document_name,
+            document_type: analysisData.document_type,
+            industry: analysisData.industry,
+            frameworks: analysisData.frameworks,
+            analysis_results_type: typeof analysisData.analysis_results,
+            analysis_results_keys: Object.keys(analysisData.analysis_results),
+            gaps_found: analysisData.gaps_found,
+            compliance_score: analysisData.compliance_score,
+            token_present: !!token,
+            token_length: token.length
+          });
+
+          const saveResult = await authAPI.saveAnalysis(analysisData);
+          
+          console.log('Analysis saved to history successfully:', saveResult);
+          setProgress('✅ Analysis saved to history');
+          
+          // Clear the progress message after a short delay
+          setTimeout(() => setProgress(''), 2000);
+          
+        } catch (saveError) {
+          console.error('Failed to save analysis to history:', saveError);
+          console.error('Save error details:', {
+            message: saveError.message,
+            file_name: file?.name,
+            results_present: !!results,
+            token_present: !!token,
+            error_stack: saveError.stack
+          });
+          
+          // Show user-friendly error message for auth issues
+          if (saveError.message.includes('token') || saveError.message.includes('authentication')) {
+            setProgress('⚠️ Please log in to save analysis history');
+            setTimeout(() => setProgress(''), 3000);
+          } else {
+            setProgress('⚠️ Could not save to history (analysis still visible)');
+            setTimeout(() => setProgress(''), 3000);
+          }
+        }
+      } else {
+        console.log('User not authenticated, skipping analysis save');
+        setProgress('⚠️ Login to save analysis history');
+        setTimeout(() => setProgress(''), 3000);
+      }
+      
       setProgress('');
       
     } catch (err) {
@@ -163,7 +248,7 @@ function PolicyAnalyzer({ onNavigate, onDocumentUpload }) {
           />
 
           {/* Results Section */}
-          {analysis && <AnalysisResults analysis={analysis} />}
+          {analysis && <AnalysisResults analysis={analysis} isHistoryView={false} />}
 
         </div>
       </div>

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 function LandingPage({ onNavigate }) {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Subtle Background Elements */}
@@ -10,7 +13,7 @@ function LandingPage({ onNavigate }) {
         <div className="absolute bottom-40 left-1/3 w-32 h-16 bg-gradient-to-r from-osmo-yellow/10 to-osmo-green/10 rounded-osmo opacity-40"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 py-12 max-w-7xl">
+      <div className="relative z-10 container mx-auto px-6 py-20 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-20">
           <h1 className="text-6xl md:text-8xl font-black text-osmo-dark mb-6">
@@ -26,18 +29,37 @@ function LandingPage({ onNavigate }) {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-            <button
-              onClick={() => onNavigate('analyzer')}
-              className="bg-osmo-dark text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
-            >
-              Start free analysis
-            </button>
-            <button
-              onClick={() => onNavigate('generator')}
-              className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
-            >
-              Generate policy
-            </button>
+            {user ? (
+              <>
+                <button
+                  onClick={() => onNavigate('analyzer')}
+                  className="bg-osmo-dark text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                >
+                  Start Analysis
+                </button>
+                <button
+                  onClick={() => onNavigate('generator')}
+                  className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
+                >
+                  Generate Policy
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => onNavigate('login')}
+                  className="bg-osmo-dark text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                >
+                  Get Started Free
+                </button>
+                <button
+                  onClick={() => onNavigate('compliances')}
+                  className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
+                >
+                  Learn More
+                </button>
+              </>
+            )}
           </div>
         </div>
 

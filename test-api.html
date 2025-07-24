@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Direct API Test</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <button onclick="testSaveAnalysis()">Test Save Analysis</button>
+    <div id="results"></div>
+
+    <script>
+        let authToken = null;
+
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:3001/auth/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'password123'
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+                if (data.token) {
+                    authToken = data.token;
+                    document.getElementById('results').innerHTML = '<p>Login successful! Token saved.</p>';
+                } else {
+                    document.getElementById('results').innerHTML = '<p>Login failed: ' + data.message + '</p>';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('results').innerHTML = '<p>Login error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testSaveAnalysis() {
+            if (!authToken) {
+                document.getElementById('results').innerHTML = '<p>Please login first!</p>';
+                return;
+            }
+
+            const analysisData = {
+                document_name: 'Test Document Frontend',
+                analysis_results: {
+                    summary: 'Test analysis from frontend',
+                    compliance: 'High',
+                    recommendations: ['Test recommendation']
+                }
+            };
+
+            console.log('Sending analysis data:', analysisData);
+
+            try {
+                const response = await fetch('http://localhost:3001/api/analysis/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(analysisData)
+                });
+
+                const data = await response.json();
+                console.log('Save analysis response:', data);
+                
+                if (response.ok) {
+                    document.getElementById('results').innerHTML = '<p>Analysis saved successfully!</p>';
+                } else {
+                    document.getElementById('results').innerHTML = '<p>Save failed: ' + data.message + '</p>';
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                document.getElementById('results').innerHTML = '<p>Save error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

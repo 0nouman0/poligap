@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DetailedPlan from './DetailedPlan';
 
-function AnalysisResults({ analysis }) {
+function AnalysisResults({ analysis, onNavigate, isHistoryView = false, documentName, analysisDate }) {
   const [showDetailedPlan, setShowDetailedPlan] = useState(false);
   const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
 
@@ -14,8 +14,39 @@ function AnalysisResults({ analysis }) {
     }, 2000); // 2 second loading animation
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
-    <div className="w-full bg-white rounded-osmo shadow-osmo p-8 space-y-6">
+    <div className="min-h-screen bg-white">
+      {/* Header with Back Button for History View */}
+      {isHistoryView && (
+        <div className="bg-white border-b border-gray-200 p-6 shadow-osmo">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <button
+              onClick={() => onNavigate('history')}
+              className="bg-osmo-dark text-white px-6 py-3 rounded-osmo font-bold hover:bg-gray-700 transition-all shadow-osmo"
+            >
+              ← Back to History
+            </button>
+            <div className="text-center">
+              <h1 className="text-3xl font-black text-osmo-dark">{documentName}</h1>
+              <p className="text-gray-600">Analyzed on {formatDate(analysisDate)}</p>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      )}
+
+      <div className={`${isHistoryView ? 'container mx-auto px-6 py-12' : ''}`}>
+        <div className={`w-full bg-white rounded-osmo shadow-osmo p-8 space-y-6 ${!isHistoryView ? '' : 'max-w-6xl mx-auto'}`}>
       
       {/* Header */}
       <div className="w-full bg-gradient-to-r from-osmo-blue to-osmo-purple rounded-osmo p-6">
@@ -213,6 +244,8 @@ function AnalysisResults({ analysis }) {
           onClose={() => setShowDetailedPlan(false)}
         />
       )}
+        </div>
+      </div>
     </div>
   );
 }
