@@ -12,10 +12,11 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
   const [pagination, setPagination] = useState({});
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filterType, setFilterType] = useState('all'); // all, policy_analysis, risk_assessment
 
   useEffect(() => {
     fetchHistory();
-  }, [currentPage]);
+  }, [currentPage, filterType]);
 
   const fetchHistory = async () => {
     try {
@@ -80,6 +81,28 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
     return 'text-red-600 bg-red-50';
   };
 
+  const getAnalysisTypeInfo = (item) => {
+    const analysisType = item.analysis_type || 'policy_analysis';
+    
+    switch (analysisType) {
+      case 'risk_assessment':
+        return {
+          label: 'Risk Assessment',
+          icon: '🛡️',
+          color: 'bg-purple-100 text-purple-800',
+          description: 'Comprehensive compliance risk analysis'
+        };
+      case 'policy_analysis':
+      default:
+        return {
+          label: 'Policy Analysis',
+          icon: '📋',
+          color: 'bg-blue-100 text-blue-800',
+          description: 'Document gap analysis'
+        };
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
@@ -96,50 +119,124 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <div className="container mx-auto px-6 py-12 max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-black text-osmo-dark mb-4">
+        {/* Enhanced Header */}
+        <div className="mb-10">
+          <h1 className="text-5xl font-black bg-gradient-to-r from-slate-800 via-blue-700 to-purple-700 bg-clip-text text-transparent mb-6 text-center">
             📊 Analysis History
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-xl text-gray-600 text-center font-medium">
             View and manage your policy analysis history
           </p>
         </div>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-osmo text-red-700">
-            {error}
+        {/* Enhanced Filter Controls */}
+        <div className="mb-8">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
+            <div className="flex flex-wrap gap-4 justify-center">
+              <button
+                onClick={() => setFilterType('all')}
+                className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                  filterType === 'all'
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                All Analysis ({history.length})
+              </button>
+              <button
+                onClick={() => setFilterType('policy_analysis')}
+                className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-2 ${
+                  filterType === 'policy_analysis'
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span>📋</span>
+                Policy Analysis ({history.filter(item => !item.analysis_type || item.analysis_type === 'policy_analysis').length})
+              </button>
+              <button
+                onClick={() => setFilterType('risk_assessment')}
+                className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-2 ${
+                  filterType === 'risk_assessment'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span>🛡️</span>
+                Risk Assessments ({history.filter(item => item.analysis_type === 'risk_assessment').length})
+              </button>
+            </div>
           </div>
-        )}
+        </div>
 
-        {history.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📋</div>
-            <h3 className="text-2xl font-bold text-gray-600 mb-2">No Analysis History</h3>
-            <p className="text-gray-500 mb-6">
-              You haven't analyzed any policies yet. Start by analyzing your first document!
-            </p>
-            <button
-              onClick={() => onNavigate('analyzer')}
-              className="bg-osmo-purple text-white px-6 py-3 rounded-osmo font-semibold hover:bg-purple-700 transition-all shadow-osmo"
-            >
-              Start Analysis
-            </button>
+        {/* Enhanced Error Display */}
+        {error && (
+          <div className="mb-8 p-6 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl text-red-700 shadow-lg">
+            <div className="flex items-center space-x-2">
+              <span className="text-xl">⚠️</span>
+              <span className="font-bold">{error}</span>
+            </div>
           </div>
-        ) : (
-          <>
-            {/* History Grid */}
-            <div className="grid gap-6 mb-8">
-              {history.map((item) => (
-                <div key={item.id} className="bg-white rounded-osmo-lg border border-gray-200 p-6 shadow-osmo hover:shadow-osmo-lg transition-all">
+        )}        {(() => {
+          const filteredHistory = history.filter(item => {
+            if (filterType === 'all') return true;
+            if (filterType === 'policy_analysis') return !item.analysis_type || item.analysis_type === 'policy_analysis';
+            if (filterType === 'risk_assessment') return item.analysis_type === 'risk_assessment';
+            return true;
+          });
+
+          if (filteredHistory.length === 0) {
+            return (
+              <div className="text-center py-16">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-12 shadow-xl border border-white/20 max-w-lg mx-auto">
+                  <div className="text-8xl mb-6">📋</div>
+                  <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent mb-4">
+                    {filterType === 'all' ? 'No Analysis History' : 
+                     filterType === 'policy_analysis' ? 'No Policy Analysis Found' :
+                     'No Risk Assessments Found'}
+                  </h3>
+                  <p className="text-gray-600 mb-8 text-lg font-medium leading-relaxed">
+                    {filterType === 'all' ? "You haven't analyzed any policies yet. Start by analyzing your first document!" :
+                     filterType === 'policy_analysis' ? "You haven't done any policy analysis yet." :
+                     "You haven't done any risk assessments yet."}
+                  </p>
+                  <button
+                    onClick={() => onNavigate(filterType === 'risk_assessment' ? 'assessment' : 'analyzer')}
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    <span className="flex items-center space-x-2">
+                      <span>{filterType === 'risk_assessment' ? '🛡️' : '🔍'}</span>
+                      <span>{filterType === 'risk_assessment' ? 'Start Risk Assessment' : 'Start Analysis'}</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <>
+              {/* Enhanced History Grid */}
+              <div className="grid gap-8 mb-10">
+                {filteredHistory.map((item) => (
+                <div key={item.id} className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-3">
-                        <h3 className="text-xl font-bold text-osmo-dark">
+                      <div className="flex items-center gap-4 mb-4">
+                        <h3 className="text-2xl font-black bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent">
                           {item.document_name}
                         </h3>
+                        {(() => {
+                          const typeInfo = getAnalysisTypeInfo(item);
+                          return (
+                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${typeInfo.color} flex items-center gap-2`}>
+                              <span>{typeInfo.icon}</span>
+                              {typeInfo.label}
+                            </span>
+                          );
+                        })()}
                         {item.compliance_score !== null && (
                           <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getComplianceScoreColor(item.compliance_score)}`}>
                             {item.compliance_score}% Compliance
@@ -149,8 +246,10 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
                       
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                         <div>
-                          <span className="text-sm text-gray-500">Document Type</span>
-                          <p className="font-semibold text-gray-800">{item.document_type || 'Not specified'}</p>
+                          <span className="text-sm text-gray-500">Type</span>
+                          <p className="font-semibold text-gray-800">
+                            {getAnalysisTypeInfo(item).label}
+                          </p>
                         </div>
                         <div>
                           <span className="text-sm text-gray-500">Industry</span>
@@ -166,9 +265,12 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
                         </div>
                       </div>
 
+                      {/* Frameworks/Jurisdictions Section */}
                       {item.frameworks && item.frameworks.length > 0 && (
                         <div className="mb-4">
-                          <span className="text-sm text-gray-500 block mb-2">Frameworks</span>
+                          <span className="text-sm text-gray-500 block mb-2">
+                            {item.analysis_type === 'risk_assessment' ? 'Jurisdictions' : 'Frameworks'}
+                          </span>
                           <div className="flex flex-wrap gap-2">
                             {item.frameworks.map((framework, index) => (
                               <span
@@ -178,6 +280,32 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
                                 {framework}
                               </span>
                             ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Risk Assessment Additional Details */}
+                      {item.analysis_type === 'risk_assessment' && item.organization_details && (
+                        <div className="mb-4 p-4 bg-gray-50 rounded-osmo">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            {item.organization_details.organizationType && (
+                              <div>
+                                <span className="text-gray-500">Organization:</span>
+                                <p className="font-medium text-gray-800">{item.organization_details.organizationType}</p>
+                              </div>
+                            )}
+                            {item.organization_details.companySize && (
+                              <div>
+                                <span className="text-gray-500">Size:</span>
+                                <p className="font-medium text-gray-800">{item.organization_details.companySize}</p>
+                              </div>
+                            )}
+                            {item.organization_details.riskAppetite && (
+                              <div>
+                                <span className="text-gray-500">Risk Appetite:</span>
+                                <p className="font-medium text-gray-800 capitalize">{item.organization_details.riskAppetite}</p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -236,8 +364,9 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
                 </button>
               </div>
             )}
-          </>
-        )}
+            </>
+          );
+        })()}
       </div>
 
       {/* Analysis Details Modal */}

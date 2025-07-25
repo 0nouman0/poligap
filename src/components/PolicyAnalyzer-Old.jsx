@@ -189,77 +189,66 @@ function PolicyAnalyzer({ onNavigate, onDocumentUpload }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Enhanced Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-6 shadow-lg sticky top-0 z-10">
+    <div className="min-h-screen bg-white">
+      {/* Header with Back Button */}
+      <div className="bg-white border-b border-gray-200 p-6 shadow-osmo">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button
             onClick={() => onNavigate('home')}
-            className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:from-slate-800 hover:to-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="bg-osmo-dark text-white px-6 py-3 rounded-osmo font-bold hover:bg-gray-700 transition-all shadow-osmo"
           >
-            <span className="flex items-center space-x-2">
-              <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-              <span>Back to home</span>
-            </span>
+            ← Back to home
           </button>
           <div className="text-center">
-            <h1 className="text-4xl font-black bg-gradient-to-r from-slate-800 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
-              Gap Analyzer
-            </h1>
-            <p className="text-gray-600 mt-1 font-medium">AI-powered compliance analysis</p>
+            <h1 className="text-4xl font-black text-osmo-dark">Policy Gap Analyzer</h1>
+            <p className="text-gray-600">AI-powered compliance analysis</p>
           </div>
-          <div className="w-24"></div>
+          <div></div>
         </div>
       </div>
 
-      {/* Enhanced Main Content */}
+      {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="w-full max-w-[70%] mx-auto space-y-10">
+        <div className="w-full max-w-[70%] mx-auto space-y-8">
           
-          {/* Enhanced Instructions */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl border border-white/20">
-            <h2 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent mb-8 text-center">How it works</h2>
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className="group bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-xl border border-purple-100 hover:shadow-lg transition-all duration-300">
-                <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                  <span className="text-3xl text-white">📁</span>
+          {/* Instructions */}
+          <div className="bg-white rounded-osmo-lg p-8 shadow-osmo-lg border border-gray-100">
+            <h2 className="text-2xl font-black text-osmo-dark mb-6 text-center">How it works</h2>
+            <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div className="bg-gradient-to-b from-osmo-purple/5 to-osmo-purple/10 p-6 rounded-osmo">
+                <div className="w-16 h-16 bg-osmo-purple rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl text-white">📁</span>
                 </div>
-                <p className="font-bold text-slate-800 mb-3 text-lg">Upload PDF</p>
-                <p className="text-gray-600 font-medium">Select your policy document for analysis</p>
+                <p className="font-bold text-osmo-dark mb-2">Upload PDF</p>
+                <p className="text-sm text-gray-600">Select your policy document</p>
               </div>
-              <div className="group bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl border border-blue-100 hover:shadow-lg transition-all duration-300">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                  <span className="text-3xl text-white">🤖</span>
+              <div className="bg-gradient-to-b from-osmo-blue/5 to-osmo-blue/10 p-6 rounded-osmo">
+                <div className="w-16 h-16 bg-osmo-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl text-white">🤖</span>
                 </div>
-                <p className="font-bold text-slate-800 mb-3 text-lg">AI Analysis</p>
-                <p className="text-gray-600 font-medium">AI scans for compliance gaps and issues</p>
+                <p className="font-bold text-osmo-dark mb-2">AI Analysis</p>
+                <p className="text-sm text-gray-600">AI scans for compliance gaps</p>
               </div>
-              <div className="group bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-xl border border-emerald-100 hover:shadow-lg transition-all duration-300">
-                <div className="w-20 h-20 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                  <span className="text-3xl text-white">📊</span>
+              <div className="bg-gradient-to-b from-osmo-green/5 to-osmo-green/10 p-6 rounded-osmo">
+                <div className="w-16 h-16 bg-osmo-green rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl text-white">📊</span>
                 </div>
-                <p className="font-bold text-slate-800 mb-3 text-lg">Get Report</p>
-                <p className="text-gray-600 font-medium">Receive detailed compliance insights</p>
+                <p className="font-bold text-osmo-dark mb-2">Get Results</p>
+                <p className="text-sm text-gray-600">Detailed gap analysis & fixes</p>
               </div>
             </div>
           </div>
 
-          {/* Enhanced Upload Section */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl border border-white/20">
-            <DocumentUpload 
-              onUpload={handleFileUpload}
-              uploading={loading}
-              progress={progress}
-              error={error}
-            />
-          </div>
+          {/* Upload Section */}
+          <DocumentUpload 
+            onUpload={handleFileUpload}
+            uploading={loading}
+            progress={progress}
+            error={error}
+          />
 
-          {/* Enhanced Results Section */}
-          {analysis && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl border border-white/20">
-              <AnalysisResults analysis={analysis} isHistoryView={false} />
-            </div>
-          )}
+          {/* Results Section */}
+          {analysis && <AnalysisResults analysis={analysis} isHistoryView={false} />}
 
         </div>
       </div>

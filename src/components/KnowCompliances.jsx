@@ -155,102 +155,111 @@ function KnowCompliances({ onNavigate }) {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header with Back Button */}
-      <div className="bg-white border-b border-gray-200 p-6 shadow-osmo">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-teal-50">
+      {/* Enhanced Header */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-6 shadow-lg sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button
             onClick={() => onNavigate('home')}
-            className="bg-osmo-dark text-white px-6 py-3 rounded-osmo font-bold hover:bg-gray-700 transition-all shadow-osmo"
+            className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:from-slate-800 hover:to-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            ← Back to home
+            <span className="flex items-center space-x-2">
+              <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
+              <span>Back to home</span>
+            </span>
           </button>
           <div className="text-center">
-            <h1 className="text-4xl font-black text-osmo-dark">Know Your Compliances</h1>
-            <p className="text-gray-600">Understanding regulatory frameworks made simple</p>
+            <h1 className="text-4xl font-black bg-gradient-to-r from-slate-800 via-emerald-700 to-teal-700 bg-clip-text text-transparent">
+              Know Your Compliances
+            </h1>
+            <p className="text-gray-600 mt-1 font-medium">Understanding regulatory frameworks made simple</p>
           </div>
-          <div></div>
+          <div className="w-24"></div>
         </div>
       </div>
 
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-6xl mx-auto">
           
-          {/* Introduction */}
-          <div className="bg-white rounded-osmo-lg p-8 shadow-osmo-lg border border-gray-100 mb-8 text-center">
-            <h2 className="text-2xl font-black text-osmo-dark mb-4">Regulatory frameworks made simple</h2>
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+          {/* Enhanced Introduction */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl border border-white/20 mb-10 text-center">
+            <h2 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent mb-6">Regulatory frameworks made simple</h2>
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto font-medium leading-relaxed">
               Understanding compliance doesn't have to be complicated. Learn about major regulatory requirements 
               in clear, simple language that anyone can understand.
             </p>
           </div>
 
-          {/* Compliance Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Enhanced Compliance Cards Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
             {Object.entries(compliances).map(([key, compliance]) => (
               <div key={key} className="group">
                 <div 
                   onClick={() => handleComplianceClick(key)}
-                  className="cursor-pointer bg-white rounded-osmo-lg p-6 shadow-osmo hover:shadow-osmo-lg border border-gray-100 transition-all duration-300"
+                  className="cursor-pointer bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
-                      <h3 className="text-xl font-black text-osmo-dark mb-3">{compliance.title}</h3>
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="bg-osmo-purple/10 text-osmo-purple px-3 py-1 rounded-osmo text-sm font-bold border border-osmo-purple/20">
-                          {compliance.region}
+                      <h3 className="text-2xl font-black bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent mb-4">{compliance.title}</h3>
+                      <div className="flex items-center gap-4 mb-4">
+                        <span className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold border border-emerald-200 shadow-sm">
+                          📍 {compliance.region}
                         </span>
-                        <span className="bg-osmo-blue/10 text-osmo-blue px-3 py-1 rounded-osmo text-sm font-bold border border-osmo-blue/20">
-                          Since {compliance.year}
+                        <span className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 px-4 py-2 rounded-xl text-sm font-bold border border-blue-200 shadow-sm">
+                          📅 Since {compliance.year}
                         </span>
                       </div>
                     </div>
-                    <div className="text-2xl ml-4">
-                      {selectedCompliance === key ? '−' : '+'}
+                    <div className="ml-6">
+                      <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                        <span className="text-xl font-bold group-hover:scale-110 transition-transform duration-300">
+                          {selectedCompliance === key ? '−' : '+'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 mb-4">{compliance.description}</p>
+                  <p className="text-gray-600 font-medium mb-6 leading-relaxed">{compliance.description}</p>
                   
-                  <div className="flex items-center text-osmo-purple font-medium">
+                  <div className="flex items-center text-emerald-700 font-bold">
                     {selectedCompliance === key ? 'Hide details' : 'Show details'} →
                   </div>
                 </div>
                 
-                {/* Expanded Details */}
+                {/* Enhanced Expanded Details */}
                 {selectedCompliance === key && (
-                  <div className="mt-4 bg-osmo-gray/30 rounded-osmo-lg p-6 border border-gray-200">
-                    <div className="space-y-6">
+                  <div className="mt-8 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-100 shadow-inner">
+                    <div className="space-y-8">
                       {/* Who Needs It */}
                       <div>
-                        <h4 className="text-lg font-bold text-osmo-dark mb-3 flex items-center">
-                          <span className="w-8 h-8 bg-osmo-purple rounded-full flex items-center justify-center text-white text-sm mr-3">👥</span>
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                          <span className="w-10 h-10 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center text-white text-lg mr-4 shadow-lg">👥</span>
                           Who needs to follow this?
                         </h4>
-                        <p className="text-gray-700 bg-white p-4 rounded-osmo border border-gray-200">{compliance.whoNeedsIt}</p>
+                        <p className="text-gray-700 font-medium bg-white/80 p-6 rounded-xl border border-emerald-200 shadow-sm">{compliance.whoNeedsIt}</p>
                       </div>
                       
                       {/* Simple Example */}
                       <div>
-                        <h4 className="text-lg font-bold text-osmo-dark mb-3 flex items-center">
-                          <span className="w-8 h-8 bg-osmo-blue rounded-full flex items-center justify-center text-white text-sm mr-3">💡</span>
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                          <span className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center text-white text-lg mr-4 shadow-lg">💡</span>
                           Simple example
                         </h4>
-                        <p className="text-gray-700 bg-white p-4 rounded-osmo border border-gray-200">{compliance.simpleExample}</p>
+                        <p className="text-gray-700 font-medium bg-white/80 p-6 rounded-xl border border-blue-200 shadow-sm">{compliance.simpleExample}</p>
                       </div>
                       
                       {/* Key Points */}
                       <div>
-                        <h4 className="text-lg font-bold text-osmo-dark mb-3 flex items-center">
-                          <span className="w-8 h-8 bg-osmo-green rounded-full flex items-center justify-center text-white text-sm mr-3">✓</span>
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                          <span className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-lg mr-4 shadow-lg">✓</span>
                           Key requirements
                         </h4>
-                        <div className="bg-white rounded-osmo border border-gray-200 p-4">
-                          <ul className="space-y-3">
+                        <div className="bg-white/80 rounded-xl border border-purple-200 p-6 shadow-sm">
+                          <ul className="space-y-4">
                             {compliance.keyPoints.map((point, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="w-2 h-2 bg-osmo-green rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span className="text-gray-700">{point}</span>
+                              <li key={index} className="flex items-start p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
+                                <span className="w-3 h-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-1.5 mr-4 flex-shrink-0 shadow-sm"></span>
+                                <span className="text-gray-700 font-medium">{point}</span>
                               </li>
                             ))}
                           </ul>
@@ -263,25 +272,31 @@ function KnowCompliances({ onNavigate }) {
             ))}
           </div>
 
-          {/* CTA Section */}
-          <div className="bg-osmo-dark rounded-osmo-lg p-8 text-white text-center">
-            <h3 className="text-2xl font-black mb-4">Ready to analyze your policies?</h3>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+          {/* Enhanced CTA Section */}
+          <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-10 text-white text-center shadow-xl">
+            <h3 className="text-3xl font-black mb-6">Ready to analyze your policies?</h3>
+            <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
               Now that you understand the compliance requirements, let our AI analyze your existing policies 
               to identify any gaps and help you stay compliant.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
               <button
                 onClick={() => onNavigate('analyzer')}
-                className="bg-white text-osmo-dark px-6 py-3 rounded-osmo font-bold hover:bg-gray-100 transition-colors"
+                className="bg-white text-slate-800 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                Start policy analysis
+                <span className="flex items-center justify-center space-x-2">
+                  <span>🔍</span>
+                  <span>Start policy analysis</span>
+                </span>
               </button>
               <button
                 onClick={() => onNavigate('generator')}
-                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-osmo font-bold hover:bg-white hover:text-osmo-dark transition-all"
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-slate-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                Generate new policy
+                <span className="flex items-center justify-center space-x-2">
+                  <span>📝</span>
+                  <span>Generate new policy</span>
+                </span>
               </button>
             </div>
           </div>

@@ -5,64 +5,81 @@ function LandingPage({ onNavigate }) {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Subtle Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Enhanced Background Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-10 w-24 h-24 bg-gradient-to-br from-osmo-purple/10 to-osmo-pink/10 rounded-osmo opacity-50"></div>
-        <div className="absolute top-60 right-20 w-16 h-16 bg-gradient-to-br from-osmo-cyan/10 to-osmo-blue/10 rounded-full opacity-60"></div>
-        <div className="absolute bottom-40 left-1/3 w-32 h-16 bg-gradient-to-r from-osmo-yellow/10 to-osmo-green/10 rounded-osmo opacity-40"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-3xl opacity-60 animate-pulse"></div>
+        <div className="absolute top-60 right-20 w-24 h-24 bg-gradient-to-br from-cyan-200/30 to-blue-200/30 rounded-full opacity-50 animate-bounce"></div>
+        <div className="absolute bottom-40 left-1/3 w-40 h-20 bg-gradient-to-r from-yellow-200/20 to-green-200/20 rounded-3xl opacity-40"></div>
+        <div className="absolute bottom-20 right-1/4 w-28 h-28 bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full opacity-30"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-20 max-w-7xl">
-        {/* Hero Section */}
+        {/* Enhanced Hero Section */}
         <div className="text-center mb-20">
-          <h1 className="text-6xl md:text-8xl font-black text-osmo-dark mb-6">
-            <span className="text-osmo-purple">Poli</span>gap
+          <h1 className="text-6xl md:text-8xl font-black mb-6">
+            <span className="bg-gradient-to-r from-purple-600 via-indigo-700 to-blue-800 bg-clip-text text-transparent">Poli</span>
+            <span className="text-slate-800">gap</span>
           </h1>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-600 mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-700 to-indigo-700 bg-clip-text text-transparent mb-8">
             AI-powered compliance made simple and beautiful
           </h2>
-          <p className="text-xl text-gray-500 max-w-4xl mx-auto leading-relaxed mb-12">
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12 font-medium">
             Transform your compliance workflow with intelligent gap analysis, policy generation, 
             and risk assessment across GDPR, HIPAA, SOX, PCI DSS, and 12+ regulatory frameworks.
           </p>
           
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+          {/* Enhanced CTA Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-12">
             {user ? (
               <>
                 <button
                   onClick={() => onNavigate('analyzer')}
-                  className="bg-osmo-dark text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                  className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:from-slate-800 hover:to-slate-900 transform hover:-translate-y-1 transition-all duration-300"
                 >
-                  Start Analysis
+                  <span className="flex items-center justify-center space-x-2">
+                    <span>🚀</span>
+                    <span>Start Analysis</span>
+                  </span>
                 </button>
                 <button
                   onClick={() => onNavigate('generator')}
-                  className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
+                  className="group bg-white/90 backdrop-blur-sm text-slate-800 border-2 border-gray-200 px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:border-purple-300 hover:bg-white transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  Generate Policy
+                  <span className="flex items-center justify-center space-x-2">
+                    <span>📝</span>
+                    <span>Generate Policy</span>
+                  </span>
                 </button>
               </>
             ) : (
               <>
                 <button
                   onClick={() => onNavigate('login')}
-                  className="bg-osmo-dark text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                  className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:from-slate-800 hover:to-slate-900 transform hover:-translate-y-1 transition-all duration-300"
                 >
-                  Get Started Free
+                  <span className="flex items-center justify-center space-x-2">
+                    <span>✨</span>
+                    <span>Get Started Free</span>
+                  </span>
                 </button>
                 <button
                   onClick={() => onNavigate('pricing')}
-                  className="bg-osmo-purple text-white px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] transition-all duration-300"
+                  className="group bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:from-purple-700 hover:to-indigo-800 transform hover:-translate-y-1 transition-all duration-300"
                 >
-                  View Pricing
+                  <span className="flex items-center justify-center space-x-2">
+                    <span>💎</span>
+                    <span>View Pricing</span>
+                  </span>
                 </button>
                 <button
                   onClick={() => onNavigate('compliances')}
-                  className="bg-white text-osmo-dark border-2 border-gray-200 px-8 py-4 rounded-osmo-lg font-bold text-lg shadow-osmo hover:shadow-osmo-lg hover:border-osmo-purple transition-all duration-300"
+                  className="group bg-white/90 backdrop-blur-sm text-slate-800 border-2 border-gray-200 px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:border-purple-300 hover:bg-white transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  Learn More
+                  <span className="flex items-center justify-center space-x-2">
+                    <span>📚</span>
+                    <span>Learn More</span>
+                  </span>
                 </button>
               </>
             )}
@@ -91,26 +108,37 @@ function LandingPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
+        {/* Enhanced Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto mb-20">
           
           {/* Policy Gap Analyzer */}
           <div 
             onClick={() => onNavigate('analyzer')}
-            className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
+            className="group cursor-pointer transform hover:scale-105 transition-all duration-500"
           >
-            <div className="bg-white rounded-osmo-lg p-8 shadow-osmo hover:shadow-osmo-lg border border-gray-100 transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-osmo-purple rounded-osmo flex items-center justify-center mr-4">
-                  <span className="text-2xl text-white">🔍</span>
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-500 group-hover:border-purple-200">
+              <div className="flex items-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center mr-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <span className="text-3xl text-white">🔍</span>
                 </div>
-                <h3 className="text-2xl font-black text-osmo-dark">Gap Analyzer</h3>
+                <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent">Gap Analyzer</h3>
               </div>
-              <p className="text-gray-600 text-lg mb-4">
+              <p className="text-gray-600 text-lg mb-6 font-medium leading-relaxed">
                 Upload policy documents and get instant AI-powered compliance gap analysis against GDPR, HIPAA, SOX, and more.
               </p>
-              <div className="text-osmo-purple font-bold inline-block">
-                Analyze now →
+              <div className="flex items-center justify-between">
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-700 bg-clip-text text-transparent font-bold text-lg group-hover:from-purple-700 group-hover:to-indigo-800 transition-all duration-300">
+                  Analyze now →
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate('history');
+                  }}
+                  className="text-sm text-gray-500 hover:text-purple-600 transition-colors font-medium bg-gray-100 hover:bg-purple-50 px-3 py-2 rounded-lg"
+                >
+                  View History
+                </button>
               </div>
             </div>
           </div>
@@ -118,20 +146,52 @@ function LandingPage({ onNavigate }) {
           {/* Policy Generator */}
           <div 
             onClick={() => onNavigate('generator')}
-            className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
+            className="group cursor-pointer transform hover:scale-105 transition-all duration-500"
           >
-            <div className="bg-white rounded-osmo-lg p-8 shadow-osmo hover:shadow-osmo-lg border border-gray-100 transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-osmo-blue rounded-osmo flex items-center justify-center mr-4">
-                  <span className="text-2xl text-white">⚡</span>
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-500 group-hover:border-blue-200">
+              <div className="flex items-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-700 rounded-2xl flex items-center justify-center mr-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <span className="text-3xl text-white">⚡</span>
                 </div>
-                <h3 className="text-2xl font-black text-osmo-dark">Policy Generator</h3>
+                <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent">Policy Generator</h3>
               </div>
-              <p className="text-gray-600 text-lg mb-4">
+              <p className="text-gray-600 text-lg mb-6 font-medium leading-relaxed">
                 Generate compliant policy templates instantly using AI. Choose your industry and regulations for custom policies.
               </p>
-              <div className="text-osmo-blue font-bold inline-block">
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-700 bg-clip-text text-transparent font-bold text-lg group-hover:from-blue-700 group-hover:to-cyan-800 transition-all duration-300">
                 Create now →
+              </div>
+            </div>
+          </div>
+
+          {/* Risk Assessment */}
+          <div 
+            onClick={() => onNavigate('risk-assessment')}
+            className="group cursor-pointer transform hover:scale-105 transition-all duration-500"
+          >
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-500 group-hover:border-orange-200">
+              <div className="flex items-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-orange-600 to-red-700 rounded-2xl flex items-center justify-center mr-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <span className="text-3xl text-white">⚖️</span>
+                </div>
+                <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent">Risk Assessment</h3>
+              </div>
+              <p className="text-gray-600 text-lg mb-6 font-medium leading-relaxed">
+                Comprehensive compliance risk analysis with personalized recommendations and actionable insights.
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="bg-gradient-to-r from-orange-600 to-red-700 bg-clip-text text-transparent font-bold text-lg group-hover:from-orange-700 group-hover:to-red-800 transition-all duration-300">
+                  Assess now →
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate('history');
+                  }}
+                  className="text-sm text-gray-500 hover:text-orange-600 transition-colors font-medium bg-gray-100 hover:bg-orange-50 px-3 py-2 rounded-lg"
+                >
+                  View History
+                </button>
               </div>
             </div>
           </div>
@@ -139,84 +199,62 @@ function LandingPage({ onNavigate }) {
           {/* Know Compliances */}
           <div 
             onClick={() => onNavigate('compliances')}
-            className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
+            className="group cursor-pointer transform hover:scale-105 transition-all duration-500"
           >
-            <div className="bg-white rounded-osmo-lg p-8 shadow-osmo hover:shadow-osmo-lg border border-gray-100 transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-osmo-cyan rounded-osmo flex items-center justify-center mr-4">
-                  <span className="text-2xl text-white">📚</span>
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl hover:shadow-2xl border border-white/20 transition-all duration-500 group-hover:border-emerald-200">
+              <div className="flex items-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl flex items-center justify-center mr-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <span className="text-3xl text-white">📚</span>
                 </div>
-                <h3 className="text-2xl font-black text-osmo-dark">Know Compliances</h3>
+                <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent">Know Compliances</h3>
               </div>
-              <p className="text-gray-600 text-lg mb-4">
+              <p className="text-gray-600 text-lg mb-6 font-medium leading-relaxed">
                 Learn about major regulatory frameworks and compliance requirements in simple, easy-to-understand language.
               </p>
-              <div className="text-osmo-cyan font-bold inline-block">
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-700 bg-clip-text text-transparent font-bold text-lg group-hover:from-emerald-700 group-hover:to-teal-800 transition-all duration-300">
                 Learn now →
               </div>
             </div>
           </div>
-
-          {/* Risk Assessment */}
-          <div 
-            onClick={() => onNavigate('assessment')}
-            className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
-          >
-            <div className="bg-white rounded-osmo-lg p-8 shadow-osmo hover:shadow-osmo-lg border border-gray-100 transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-osmo-green rounded-osmo flex items-center justify-center mr-4">
-                  <span className="text-2xl text-white">🛡️</span>
-                </div>
-                <h3 className="text-2xl font-black text-osmo-dark">Risk Assessment</h3>
-              </div>
-              <p className="text-gray-600 text-lg mb-4">
-                Comprehensive risk analysis of your current policies with severity scoring and prioritized action plans.
-              </p>
-              <div className="text-osmo-green font-bold inline-block">
-                Assess now →
-              </div>
-            </div>
-          </div>
-
         </div>
 
-        {/* What Sets Us Apart */}
-        <div className="bg-white rounded-osmo-lg p-8 shadow-osmo-lg border border-gray-100 mb-16">
-          <h3 className="text-3xl font-black text-osmo-dark mb-8 text-center">What sets us apart</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-osmo-yellow rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">📊</span>
+        {/* Enhanced What Sets Us Apart */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-10 shadow-xl border border-white/20 mb-20">
+          <h3 className="text-4xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent mb-12 text-center">What sets us apart</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <span className="text-3xl">📊</span>
               </div>
-              <h4 className="text-lg font-bold text-osmo-dark mb-2">Quantitative Scoring</h4>
-              <p className="text-gray-600 text-sm">Numeric compliance scores with industry comparisons</p>
+              <h4 className="text-xl font-bold text-slate-800 mb-3">Smart Scoring</h4>
+              <p className="text-gray-600 font-medium">Numeric compliance scores with industry comparisons and benchmarking</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-osmo-purple rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🎨</span>
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <span className="text-3xl">🎨</span>
               </div>
-              <h4 className="text-lg font-bold text-osmo-dark mb-2">Beautiful Design</h4>
-              <p className="text-gray-600 text-sm">Clean, modern UI makes complex compliance simple</p>
+              <h4 className="text-xl font-bold text-slate-800 mb-3">Beautiful Design</h4>
+              <p className="text-gray-600 font-medium">Clean, modern UI makes complex compliance simple and accessible</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-osmo-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">📄</span>
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <span className="text-3xl">📄</span>
               </div>
-              <h4 className="text-lg font-bold text-osmo-dark mb-2">Automated PDF Generation</h4>
-              <p className="text-gray-600 text-sm">Professional, branded policies ready for auditors</p>
+              <h4 className="text-xl font-bold text-slate-800 mb-3">Automated Reports</h4>
+              <p className="text-gray-600 font-medium">Professional, branded policies and reports ready for auditors</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-osmo-green rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🎓</span>
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <span className="text-3xl">🎓</span>
               </div>
-              <h4 className="text-lg font-bold text-osmo-dark mb-2">Education + Analysis</h4>
-              <p className="text-gray-600 text-sm">Empowers business users, not just legal teams</p>
+              <h4 className="text-xl font-bold text-slate-800 mb-3">Education + Analysis</h4>
+              <p className="text-gray-600 font-medium">Empowers business users, not just legal teams with intuitive insights</p>
             </div>
           </div>
         </div>
 
-        {/* Proof of Impact */}
-        <div className="bg-gradient-to-r from-osmo-purple/5 to-osmo-blue/5 rounded-osmo-lg p-8 shadow-osmo border border-gray-100 mb-16">
+        {/* Enhanced Proof of Impact */}
+        <div className="bg-gradient-to-r from-purple-50 via-indigo-50 to-blue-50 rounded-2xl p-12 shadow-xl border border-purple-100 mb-20">
           <h3 className="text-3xl font-black text-osmo-dark mb-8 text-center">Proven AI impact</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">

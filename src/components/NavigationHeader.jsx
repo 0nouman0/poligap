@@ -15,17 +15,17 @@ function NavigationHeader({ currentPage, onNavigate }) {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-osmo relative z-50">
+    <header className="bg-white border-b border-gray-200 shadow-sm relative z-50 sticky top-0">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           
-          {/* Logo */}
+          {/* Simple Logo */}
           <div 
             onClick={() => onNavigate('home')}
-            className="flex items-center cursor-pointer"
+            className="flex items-center cursor-pointer group"
           >
-            <h1 className="text-2xl font-black text-osmo-dark">
-              <span className="text-osmo-purple">Poli</span>gap
+            <h1 className="text-3xl font-black text-gray-800 group-hover:text-purple-600 transition-colors duration-300">
+              <span className="text-purple-600">Poli</span>gap
             </h1>
           </div>
 
@@ -35,8 +35,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('analyzer')}
               className={`font-semibold transition-colors ${
                 currentPage === 'analyzer' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               Analyzer
@@ -45,8 +45,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('generator')}
               className={`font-semibold transition-colors ${
                 currentPage === 'generator' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               Generator
@@ -55,8 +55,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('history')}
               className={`font-semibold transition-colors ${
                 currentPage === 'history' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               History
@@ -65,8 +65,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('pricing')}
               className={`font-semibold transition-colors ${
                 currentPage === 'pricing' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               Pricing
@@ -75,8 +75,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('compliances')}
               className={`font-semibold transition-colors ${
                 currentPage === 'compliances' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               Learn
@@ -85,8 +85,8 @@ function NavigationHeader({ currentPage, onNavigate }) {
               onClick={() => onNavigate('assessment')}
               className={`font-semibold transition-colors ${
                 currentPage === 'assessment' 
-                  ? 'text-osmo-purple' 
-                  : 'text-gray-600 hover:text-osmo-purple'
+                  ? 'text-purple-600' 
+                  : 'text-gray-600 hover:text-purple-600'
               }`}
             >
               Assessment
@@ -97,12 +97,13 @@ function NavigationHeader({ currentPage, onNavigate }) {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="relative">
+                {/* Simple Account Button */}
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 bg-osmo-purple text-white px-4 py-2 rounded-osmo font-semibold hover:bg-purple-700 transition-all shadow-osmo"
+                  className="group flex items-center space-x-3 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-300 shadow-md hover:shadow-lg"
                 >
-                  <div className="w-6 h-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold">
+                  <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                    <span className="text-sm font-bold">
                       {user.user_metadata?.first_name?.charAt(0) || user.email?.charAt(0) || '?'}
                     </span>
                   </div>
@@ -112,14 +113,14 @@ function NavigationHeader({ currentPage, onNavigate }) {
                   <span className="text-sm">▼</span>
                 </button>
 
-                {/* User Dropdown Menu */}
+                {/* Simple User Dropdown Menu */}
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-osmo shadow-osmo-lg border border-gray-100 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-semibold text-osmo-dark">
+                  <div className="absolute right-0 mt-3 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-lg font-bold text-gray-800">
                         {user.user_metadata?.full_name || 'User'}
                       </p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="text-sm text-gray-600">{user.email}</p>
                     </div>
                     
                     <button
@@ -127,9 +128,10 @@ function NavigationHeader({ currentPage, onNavigate }) {
                         onNavigate('profile');
                         setShowUserMenu(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2"
                     >
-                      👤 My Profile
+                      <span>👤</span>
+                      <span>My Profile</span>
                     </button>
                     
                     <button
@@ -137,17 +139,19 @@ function NavigationHeader({ currentPage, onNavigate }) {
                         onNavigate('monitor');
                         setShowUserMenu(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2"
                     >
-                      📊 Compliance Monitor
+                      <span>📊</span>
+                      <span>Compliance Monitor</span>
                     </button>
                     
-                    <div className="border-t border-gray-100 mt-2 pt-2">
+                    <div className="border-t border-gray-100 mt-1 pt-1">
                       <button
                         onClick={handleSignOut}
-                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200 flex items-center space-x-2"
                       >
-                        🚪 Sign Out
+                        <span>🚪</span>
+                        <span>Sign Out</span>
                       </button>
                     </div>
                   </div>
@@ -157,13 +161,13 @@ function NavigationHeader({ currentPage, onNavigate }) {
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => onNavigate('login')}
-                  className="text-osmo-dark font-semibold hover:text-osmo-purple transition-colors"
+                  className="text-gray-700 font-semibold hover:text-purple-600 transition-colors"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => onNavigate('login')}
-                  className="bg-osmo-purple text-white px-4 py-2 rounded-osmo font-semibold hover:bg-purple-700 transition-all shadow-osmo"
+                  className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors shadow-md"
                 >
                   Get Started
                 </button>

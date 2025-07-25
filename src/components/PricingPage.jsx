@@ -353,76 +353,83 @@ function PricingPage({ onNavigate }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Header */}
-      <div className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
+      {/* Enhanced Header */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 shadow-lg sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <button
                 onClick={() => onNavigate('home')}
-                className="text-osmo-purple hover:text-purple-700 font-semibold"
+                className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:from-slate-800 hover:to-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                ← Back to Home
+                <span className="flex items-center space-x-2">
+                  <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
+                  <span>Back to Home</span>
+                </span>
               </button>
-              <div className="h-8 w-px bg-gray-300"></div>
-              <h1 className="text-2xl font-bold text-gray-900">Pricing Plans</h1>
+              <div className="h-8 w-px bg-gradient-to-b from-purple-300 to-pink-300"></div>
+              <h1 className="text-3xl font-black bg-gradient-to-r from-slate-800 via-purple-700 to-pink-700 bg-clip-text text-transparent">Pricing Plans</h1>
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Choose Your <span className="text-osmo-purple">Compliance Journey</span>
+        {/* Enhanced Hero Section */}
+        <div className="text-center mb-20">
+          <h2 className="text-6xl font-black bg-gradient-to-r from-slate-800 via-purple-700 to-pink-700 bg-clip-text text-transparent mb-6">
+            Choose Your <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Compliance Journey</span>
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
             From startups to enterprises, we have the perfect plan to help you achieve compliance excellence with AI-powered policy analysis.
           </p>
           
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center space-x-4 mb-8">
-            <span className={`font-medium transition-all ${billingPeriod === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Monthly
-            </span>
-            <button
-              onClick={toggleBillingPeriod}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-osmo-purple focus:ring-offset-2 transform hover:scale-105 ${
-                billingPeriod === 'yearly' ? 'bg-osmo-purple' : 'bg-gray-200'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-                  billingPeriod === 'yearly' ? 'translate-x-6' : 'translate-x-1'
+          {/* Enhanced Billing Toggle */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 inline-block mb-12">
+            <div className="flex items-center justify-center space-x-6">
+              <span className={`font-bold text-lg transition-all duration-300 ${billingPeriod === 'monthly' ? 'text-slate-800' : 'text-gray-500'}`}>
+                Monthly
+              </span>
+              <button
+                onClick={toggleBillingPeriod}
+                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-100 transform hover:scale-105 shadow-lg ${
+                  billingPeriod === 'yearly' ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-gray-300'
                 }`}
-              />
-            </button>
-            <span className={`font-medium transition-all ${billingPeriod === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Yearly
-            </span>
-            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full ml-2 animate-pulse">
-              Save up to 30%
-            </span>
+              >
+                <span
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform duration-300 shadow-lg ${
+                    billingPeriod === 'yearly' ? 'translate-x-7' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={`font-bold text-lg transition-all duration-300 ${billingPeriod === 'yearly' ? 'text-slate-800' : 'text-gray-500'}`}>
+                Yearly
+              </span>
+              {billingPeriod === 'yearly' && (
+                <div className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold border border-emerald-200 shadow-sm animate-pulse">
+                  Save 20%! 🎉
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Interactive Calculator Toggle */}
-          <div className="flex justify-center mb-8">
+          {/* Enhanced Interactive Calculator Toggle */}
+          <div className="flex justify-center mb-12">
             <button
               onClick={() => setShowCalculator(!showCalculator)}
-              className="bg-blue-50 hover:bg-blue-100 text-blue-700 px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-100 to-cyan-100 hover:from-blue-200 hover:to-cyan-200 text-blue-700 px-8 py-4 rounded-xl font-bold transition-all duration-300 flex items-center space-x-3 transform hover:scale-105 shadow-lg hover:shadow-xl border border-blue-200"
             >
-              <Calculator className="w-5 h-5" />
+              <Calculator className="w-6 h-6" />
               <span>{showCalculator ? 'Hide' : 'Show'} Cost Calculator</span>
             </button>
           </div>
 
-          {/* Dynamic Cost Calculator */}
+          {/* Enhanced Dynamic Cost Calculator */}
           {showCalculator && (
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8 max-w-4xl mx-auto transform transition-all duration-500 animate-in border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <TrendingUp className="w-6 h-6 text-green-500 mr-2" />
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-10 mb-12 max-w-5xl mx-auto transform transition-all duration-500 animate-in border border-white/20">
+              <h3 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent mb-8 flex items-center justify-center">
+                <TrendingUp className="w-8 h-8 text-green-500 mr-3" />
                 Calculate Your Savings & Get Personalized Recommendations
               </h3>
               

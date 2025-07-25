@@ -56,21 +56,87 @@ const initializeDatabase = async () => {
       )
     `;
     
-    // Policy analysis history table
+    // Analysis history table (unified for both policy analysis and risk assessment)
     await sql`
-      CREATE TABLE IF NOT EXISTS policy_analysis_history (
+      CREATE TABLE IF NOT EXISTS analysis_history (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         document_name VARCHAR(255),
         document_type VARCHAR(100),
+        analysis_type VARCHAR(50) DEFAULT 'policy_analysis',
         industry VARCHAR(100),
         frameworks TEXT[],
+        organization_details JSONB,
         analysis_results JSONB,
         gaps_found INTEGER DEFAULT 0,
         compliance_score INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
+
+    // Migrate data from old table to new table if needed
+    try {
+      const oldTableExists = await sql`
+        SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_name = 'policy_analysis_history'
+        )
+      `;
+      
+      if (oldTableExists[0].exists) {
+        console.log('Migrating data from policy_analysis_history to analysis_history...');
+        
+        // Check if there's data in the old table that's not in the new table
+        const oldData = await sql`
+          SELECT * FROM policy_analysis_history 
+          WHERE id NOT IN (SELECT id FROM analysis_history WHERE id IS NOT NULL)
+        `;
+        
+        if (oldData.length > 0) {
+          // Migrate the data
+          for (const record of oldData) {
+            await sql`
+              INSERT INTO analysis_history 
+              (id, user_id, document_name, document_type, analysis_type, industry, frameworks, organization_details, analysis_results, gaps_found, compliance_score, created_at)
+              VALUES (
+                ${record.id}, 
+                ${record.user_id}, 
+                ${record.document_name}, 
+                ${record.document_type}, 
+                ${record.analysis_type || 'policy_analysis'}, 
+                ${record.industry}, 
+                ${record.frameworks}, 
+                ${record.organization_details || {}}, 
+                ${record.analysis_results}, 
+                ${record.gaps_found || 0}, 
+                ${record.compliance_score || 0}, 
+                ${record.created_at}
+              )
+              ON CONFLICT (id) DO NOTHING
+            `;
+          }
+          console.log(`Migrated ${oldData.length} records from policy_analysis_history to analysis_history`);
+          
+          // Update the sequence to continue from the highest ID
+          await sql`
+            SELECT setval('analysis_history_id_seq', (SELECT MAX(id) FROM analysis_history))
+          `;
+          console.log('Updated sequence for analysis_history table');
+        }
+      }
+    } catch (migrationError) {
+      console.log('Migration not needed or already completed:', migrationError.message);
+    }
+
+    // Always ensure the sequence is correct
+    try {
+      await sql`
+        SELECT setval('analysis_history_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM analysis_history))
+      `;
+      console.log('Sequence updated for analysis_history table');
+    } catch (sequenceError) {
+      console.log('Sequence update error:', sequenceError.message);
+    }
     
     console.log('Database tables initialized successfully');
   } catch (error) {
@@ -291,12 +357,26 @@ app.post('/api/analysis/save', authenticateToken, async (req, res) => {
     const { 
       document_name, 
       document_type, 
+      analysis_type,
       industry, 
       frameworks, 
+      organization_details,
       analysis_results, 
       gaps_found, 
       compliance_score 
     } = req.body;
+
+    console.log('Extracted request data:', {
+      document_name,
+      document_type,
+      analysis_type,
+      industry,
+      frameworks: frameworks?.length || 0,
+      organization_details: !!organization_details,
+      analysis_results: !!analysis_results,
+      gaps_found,
+      compliance_score
+    });
 
     if (!document_name || !analysis_results) {
       console.log('Validation failed:', {
@@ -319,14 +399,16 @@ app.post('/api/analysis/save', authenticateToken, async (req, res) => {
     }
 
     const savedAnalysis = await sql`
-      INSERT INTO policy_analysis_history 
-      (user_id, document_name, document_type, industry, frameworks, analysis_results, gaps_found, compliance_score)
+      INSERT INTO analysis_history 
+      (user_id, document_name, document_type, analysis_type, industry, frameworks, organization_details, analysis_results, gaps_found, compliance_score)
       VALUES (
         ${req.user.userId}, 
         ${document_name}, 
         ${document_type || null}, 
+        ${analysis_type || 'policy_analysis'}, 
         ${industry || null}, 
         ${frameworks || []}, 
+        ${organization_details || {}},
         ${JSON.stringify(analysis_results)}, 
         ${gaps_found || 0}, 
         ${compliance_score || 0}
@@ -355,12 +437,14 @@ app.get('/api/analysis/history', authenticateToken, async (req, res) => {
         id,
         document_name,
         document_type,
+        analysis_type,
         industry,
         frameworks,
+        organization_details,
         gaps_found,
         compliance_score,
         created_at
-      FROM policy_analysis_history 
+      FROM analysis_history 
       WHERE user_id = ${req.user.userId}
       ORDER BY created_at DESC
       LIMIT ${limit} OFFSET ${offset}
@@ -368,7 +452,7 @@ app.get('/api/analysis/history', authenticateToken, async (req, res) => {
 
     const totalCount = await sql`
       SELECT COUNT(*) as count 
-      FROM policy_analysis_history 
+      FROM analysis_history 
       WHERE user_id = ${req.user.userId}
     `;
 
@@ -393,7 +477,7 @@ app.get('/api/analysis/history/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
 
     const analysis = await sql`
-      SELECT * FROM policy_analysis_history 
+      SELECT * FROM analysis_history 
       WHERE id = ${id} AND user_id = ${req.user.userId}
     `;
 
@@ -419,7 +503,7 @@ app.delete('/api/analysis/history/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
 
     const deletedAnalysis = await sql`
-      DELETE FROM policy_analysis_history 
+      DELETE FROM analysis_history 
       WHERE id = ${id} AND user_id = ${req.user.userId}
       RETURNING id, document_name
     `;
