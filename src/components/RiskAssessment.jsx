@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { analyzeDocument } from '../lib/gemini';
 import { authAPI } from '../lib/neondb';
-
+import { toast, ToastContainer } from 'react-toastify';
 function RiskAssessment({ onNavigate }) {
   const [assessment, setAssessment] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showAllGaps, setShowAllGaps] = useState(false);
   const [showAllActions, setShowAllActions] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     organizationType: '',
     industry: '',
@@ -214,7 +215,7 @@ Format the response clearly with sections and actionable recommendations.`;
           // Show success message to user temporarily for debugging
           if (saveResult) {
             console.log('🎉 History save confirmed - assessment is now in your history!');
-            alert('✅ Risk assessment saved to history successfully! Check the History page to see it.');
+            toast.success('✅ Risk assessment saved to history successfully! Check the History page to see it.');
           }
           
         } catch (saveError) {
@@ -229,6 +230,8 @@ Format the response clearly with sections and actionable recommendations.`;
             error_name: saveError.name
           });
           
+          // Show error to user for debugging
+          setErrorMessage(`❌ Failed to save risk assessment to history: ${saveError.message}`);
           // Show error to user for debugging
           alert(`❌ Failed to save risk assessment to history: ${saveError.message}\n\nCheck console for details.`);
         }
@@ -262,33 +265,53 @@ Format the response clearly with sections and actionable recommendations.`;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header with Back Button */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-6 shadow-lg sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => onNavigate('home')}
-            className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:from-slate-800 hover:to-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-          >
-            <span className="flex items-center space-x-2">
-              <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-              <span>Back to home</span>
-            </span>
-          </button>
-          <div className="text-center">
-            <h1 className="text-4xl font-black bg-gradient-to-r from-slate-800 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
-              Risk Assessment
-            </h1>
-            <p className="text-gray-600 mt-1 font-medium">Comprehensive compliance risk analysis</p>
+    <>
+      {/* Toast Container for notifications */}
+      <ToastContainer />
+      
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+        {/* Header with Back Button */}
+        <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-6 shadow-lg sticky top-0 z-10">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <button
+              onClick={() => onNavigate('home')}
+              className="group bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:from-slate-800 hover:to-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <span className="flex items-center space-x-2">
+                <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
+                <span>Back to home</span>
+              </span>
+            </button>
+            <div>
+              <h1 className="text-3xl font-black bg-gradient-to-r from-slate-800 to-indigo-700 bg-clip-text text-transparent">
+                Risk Assessment
+              </h1>
+              <p className="text-gray-600 mt-1 font-medium">Comprehensive compliance risk analysis</p>
+            </div>
+            <div className="w-24"></div>
           </div>
-          <div className="w-24"></div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          
-          {!assessment ? (
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-4xl mx-auto">
+
+            {/* Error Notification */}
+            {errorMessage && (
+              <div className="mb-6">
+                <div className="bg-red-100 border border-red-300 text-red-800 px-6 py-4 rounded-xl shadow-lg flex items-center justify-between">
+                  <span>{errorMessage}</span>
+                  <button
+                    onClick={() => setErrorMessage('')}
+                    className="ml-4 text-red-600 font-bold hover:underline focus:outline-none"
+                    aria-label="Dismiss error"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            {!assessment ? (
             <>
               {/* Progress Indicator */}
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 mb-8 hover:shadow-2xl transition-all duration-300">
@@ -835,6 +858,7 @@ Format the response clearly with sections and actionable recommendations.`;
         </div>
       </div>
     </div>
+    </>
   );
 }
 
