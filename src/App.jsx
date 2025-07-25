@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { AuthProvider } from './contexts/AuthContext';
+import { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ToastContainer } from 'react-toastify';
 import LandingPage from './components/LandingPage';
 import PolicyAnalyzer from './components/PolicyAnalyzer';
 import PolicyGenerator from './components/PolicyGenerator';
@@ -16,11 +17,19 @@ import PricingPage from './components/PricingPage';
 import NavigationHeader from './components/NavigationHeader';
 import ProtectedRoute from './components/ProtectedRoute';
 
-function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
   const [uploadedDocument, setUploadedDocument] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
+  const { user, loading } = useAuth();
+
+  // Auto-redirect authenticated users away from login page only
+  useEffect(() => {
+    if (!loading && user && currentPage === 'login') {
+      setCurrentPage('home'); // Redirect to home instead of analyzer
+    }
+  }, [user, loading, currentPage]);
 
   const navigate = (page) => {
     setCurrentPage(page);
@@ -99,30 +108,50 @@ function App() {
   };
 
   return (
+    <div className="App bg-white min-h-screen">
+      {/* Navigation Header */}
+      <NavigationHeader currentPage={currentPage} onNavigate={navigate} />
+      
+      {/* Main Content */}
+      <main>
+        {renderPage()}
+      </main>
+      
+      {/* Chat Button - only show when document is uploaded */}
+      <ChatButton 
+        hasDocument={!!uploadedDocument}
+        onClick={() => setIsChatOpen(true)}
+      />
+      
+      {/* Chat Expert Modal */}
+      <ChatExpert
+        policyDocument={uploadedDocument}
+        isOpen={isChatOpen}
+        onToggle={() => setIsChatOpen(!isChatOpen)}
+        onClose={() => setIsChatOpen(false)}
+      />
+      
+      {/* Toast Notifications */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </div>
+  );
+}
+
+function App() {
+  return (
     <AuthProvider>
-      <div className="App bg-white min-h-screen">
-        {/* Navigation Header */}
-        <NavigationHeader currentPage={currentPage} onNavigate={navigate} />
-        
-        {/* Main Content */}
-        <main>
-          {renderPage()}
-        </main>
-        
-        {/* Chat Button - only show when document is uploaded */}
-        <ChatButton 
-          hasDocument={!!uploadedDocument}
-          onClick={() => setIsChatOpen(true)}
-        />
-        
-        {/* Chat Expert Modal */}
-        <ChatExpert
-          policyDocument={uploadedDocument}
-          isOpen={isChatOpen}
-          onToggle={() => setIsChatOpen(!isChatOpen)}
-          onClose={() => setIsChatOpen(false)}
-        />
-      </div>
+      <AppContent />
     </AuthProvider>
   );
 }

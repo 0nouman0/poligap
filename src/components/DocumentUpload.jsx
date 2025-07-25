@@ -116,49 +116,60 @@ function DocumentUpload({ onUpload, uploading, progress, error }) {
   };
 
   return (
-    <div className="w-full bg-white p-8 rounded-osmo-lg shadow-osmo-lg border border-gray-100">
-      <div className="flex items-center mb-6">
-        <div className="w-12 h-12 bg-osmo-purple rounded-osmo flex items-center justify-center mr-4">
-          <span className="text-2xl text-white">📁</span>
+    <div className="w-full bg-white/90 backdrop-blur-sm p-10 rounded-3xl shadow-2xl border border-white/30">
+      <div className="flex items-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mr-6 shadow-xl">
+          <span className="text-3xl text-white">📁</span>
         </div>
-        <h2 className="text-3xl font-black text-osmo-dark">Upload Document</h2>
+        <div>
+          <h2 className="text-4xl font-black bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent">Upload Document</h2>
+          <p className="text-gray-600 font-medium mt-1">Upload your policy for AI-powered analysis</p>
+        </div>
       </div>
       
-      {/* Regulatory Framework Selection */}
-      <div className="mb-6">
-        <label className="block text-sm font-bold mb-3 text-osmo-dark">
+      {/* Enhanced Regulatory Framework Selection */}
+      <div className="mb-8">
+        <label className="block text-xl font-black mb-6 bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent">
           Select Regulatory Frameworks to Benchmark Against:
         </label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {availableFrameworks.map((framework) => (
             <label 
               key={framework.id} 
-              className="flex items-center p-3 bg-gray-50 border border-gray-200 rounded-osmo hover:bg-gray-100 cursor-pointer shadow-osmo transition-all duration-200"
+              className={`group flex items-center p-5 rounded-xl border-2 cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+                selectedFrameworks.includes(framework.id)
+                  ? 'border-purple-500 bg-gradient-to-r from-purple-50 to-indigo-50 shadow-lg'
+                  : 'border-gray-200 bg-white/80 hover:border-purple-300'
+              }`}
             >
               <input
                 type="checkbox"
                 checked={selectedFrameworks.includes(framework.id)}
                 onChange={() => handleFrameworkChange(framework.id)}
-                className="mr-3 scale-125 accent-osmo-purple"
+                className="mr-4 w-5 h-5 text-purple-600 bg-white border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
               />
-              <div>
-                <span className="font-bold text-osmo-dark">{framework.name}</span>
-                <p className="text-xs text-gray-600 mt-1">Region: {framework.region}</p>
+              <div className="flex-1">
+                <span className="font-bold text-slate-800 text-lg block group-hover:text-purple-700 transition-colors">
+                  {framework.name}
+                </span>
+                <p className="text-sm text-gray-600 mt-1 font-medium">
+                  📍 Region: <span className="text-purple-600 font-semibold">{framework.region}</span>
+                </p>
               </div>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Industry Selection */}
-      <div className="mb-6">
-        <label className="block text-sm font-bold mb-3 text-osmo-dark">
+      {/* Enhanced Industry Selection */}
+      <div className="mb-8">
+        <label className="block text-xl font-black mb-4 bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent">
           Select Your Industry Sector:
         </label>
         <select
           value={selectedIndustry}
           onChange={(e) => setSelectedIndustry(e.target.value)}
-          className="w-full p-3 border border-gray-200 rounded-osmo bg-white text-osmo-dark font-bold shadow-osmo focus:shadow-osmo-lg focus:border-osmo-purple transition-all duration-200"
+          className="w-full px-6 py-4 border-2 border-gray-200 rounded-xl bg-white/80 backdrop-blur-sm text-slate-800 font-bold text-lg focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-lg hover:shadow-xl"
         >
           <option value="">Choose your industry...</option>
           {industries.map((industry) => (
@@ -167,51 +178,83 @@ function DocumentUpload({ onUpload, uploading, progress, error }) {
         </select>
       </div>
       
-      <div className="mb-6">
-        <div className="bg-gray-50 p-4 rounded-osmo border border-gray-200 mb-4">
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="w-full text-gray-700 bg-white border border-gray-200 p-3 rounded-osmo file:mr-4 file:py-2 file:px-4 file:bg-osmo-purple file:text-white file:font-bold file:border-0 file:rounded-osmo file:shadow-osmo hover:file:bg-osmo-purple/90 transition-all"
-          />
-          {file && (
-            <div className="mt-3 p-3 bg-osmo-green/10 rounded-osmo border border-osmo-green/20">
-              <p className="text-osmo-green font-bold">
-                ✅ {file.name} ({Math.round(file.size / 1024)} KB)
-              </p>
-            </div>
-          )}
+      {/* Enhanced File Upload */}
+      <div className="mb-8">
+        <label className="block text-xl font-black mb-4 bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent">
+          Upload Policy Document:
+        </label>
+        <div className="relative group">
+          <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-8 rounded-2xl border-2 border-dashed border-gray-300 group-hover:border-purple-400 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              className="w-full text-gray-700 bg-white border-2 border-gray-200 p-4 rounded-xl file:mr-4 file:py-3 file:px-6 file:bg-gradient-to-r file:from-purple-600 file:to-indigo-700 file:text-white file:font-bold file:border-0 file:rounded-xl file:shadow-lg hover:file:from-purple-700 hover:file:to-indigo-800 file:transition-all file:duration-300 transition-all font-medium"
+            />
+            {file && (
+              <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border-2 border-emerald-200 shadow-lg">
+                <p className="text-emerald-700 font-bold text-lg flex items-center">
+                  <span className="text-2xl mr-3">✅</span>
+                  {file.name} 
+                  <span className="ml-2 text-sm bg-emerald-100 px-2 py-1 rounded-lg">
+                    ({Math.round(file.size / 1024)} KB)
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Enhanced Upload Button */}
       <button
         onClick={handleUpload}
         disabled={uploading || !file}
-        className="w-full bg-osmo-dark text-white text-xl font-bold px-8 py-4 rounded-osmo-lg shadow-osmo-lg hover:shadow-osmo hover:transform hover:translate-y-[-2px] disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none disabled:transform-none transition-all"
+        className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white text-xl font-black px-8 py-6 rounded-2xl shadow-2xl hover:from-purple-700 hover:to-indigo-800 hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02]"
       >
-        {uploading ? '🤖 Processing...' : '⚡ Analyze Policy'}
+        {uploading ? (
+          <span className="flex items-center justify-center space-x-3">
+            <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full"></div>
+            <span>🤖 AI Processing...</span>
+          </span>
+        ) : (
+          <span className="flex items-center justify-center space-x-3">
+            <span>⚡</span>
+            <span>Analyze Policy with AI</span>
+            <span>🚀</span>
+          </span>
+        )}
       </button>
 
+      {/* Enhanced Progress Display */}
       {progress && (
-        <div className="mt-6 p-4 bg-osmo-blue/10 border border-osmo-blue/20 rounded-osmo shadow-osmo">
+        <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-2xl shadow-xl">
           <div className="flex items-center">
-            <div className="animate-spin text-2xl mr-3">⚙️</div>
-            <p className="text-osmo-blue font-bold text-lg">{progress}</p>
+            <div className="animate-spin text-3xl mr-4">⚙️</div>
+            <div>
+              <p className="text-blue-700 font-black text-xl">{progress}</p>
+              <p className="text-blue-600 text-sm font-medium mt-1">Please wait while we process your document...</p>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Enhanced Error Display */}
       {error && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-osmo shadow-osmo">
-          <div className="flex items-center mb-2">
-            <span className="text-2xl mr-3">⚠️</span>
-            <p className="text-red-700 font-bold text-lg">Error Detected</p>
+        <div className="mt-8 p-6 bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl shadow-xl">
+          <div className="flex items-start">
+            <span className="text-3xl mr-4 mt-1">⚠️</span>
+            <div className="flex-1">
+              <p className="text-red-700 font-black text-xl mb-2">Analysis Error</p>
+              <p className="text-red-600 mb-4 font-medium leading-relaxed">{error}</p>
+              <div className="bg-red-100 p-4 rounded-xl border border-red-200">
+                <p className="text-red-700 text-sm font-medium flex items-center">
+                  <span className="mr-2">💡</span>
+                  Check the browser console (F12) for detailed error information.
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="text-red-600 mb-2">{error}</p>
-          <p className="text-red-500 text-sm">
-            💡 Check the browser console (F12) for detailed error information.
-          </p>
         </div>
       )}
     </div>

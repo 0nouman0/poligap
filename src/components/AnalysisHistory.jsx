@@ -311,18 +311,24 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
                       )}
                     </div>
 
-                    <div className="flex gap-2 ml-4">
+                    <div className="flex gap-3 ml-4">
                       <button
                         onClick={() => handleViewAnalysis(item.id)}
-                        className="bg-osmo-purple text-white px-4 py-2 rounded-osmo font-semibold hover:bg-purple-700 transition-all shadow-osmo text-sm"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
                       >
-                        View Details
+                        <span className="flex items-center space-x-2">
+                          <span>👁️</span>
+                          <span>View Details</span>
+                        </span>
                       </button>
                       <button
                         onClick={() => handleDeleteAnalysis(item.id, item.document_name)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-osmo font-semibold hover:bg-red-600 transition-all shadow-osmo text-sm"
+                        className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
                       >
-                        Delete
+                        <span className="flex items-center space-x-2">
+                          <span>🗑️</span>
+                          <span>Delete</span>
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -330,38 +336,42 @@ function AnalysisHistory({ onNavigate, onViewAnalysis }) {
               ))}
             </div>
 
-            {/* Pagination */}
+            {/* Enhanced Pagination */}
             {pagination.pages > 1 && (
-              <div className="flex justify-center gap-2">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 border border-gray-300 rounded-osmo disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-                >
-                  Previous
-                </button>
-                
-                {[...Array(pagination.pages)].map((_, index) => (
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
+                <div className="flex justify-center items-center gap-3">
                   <button
-                    key={index + 1}
-                    onClick={() => setCurrentPage(index + 1)}
-                    className={`px-4 py-2 border rounded-osmo ${
-                      currentPage === index + 1
-                        ? 'bg-osmo-purple text-white border-osmo-purple'
-                        : 'border-gray-300 hover:bg-gray-50'
-                    }`}
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-xl font-bold hover:from-slate-700 hover:to-slate-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
-                    {index + 1}
+                    ← Previous
                   </button>
-                ))}
-                
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, pagination.pages))}
-                  disabled={currentPage === pagination.pages}
-                  className="px-4 py-2 border border-gray-300 rounded-osmo disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-                >
-                  Next
-                </button>
+                  
+                  <div className="flex gap-2">
+                    {[...Array(pagination.pages)].map((_, index) => (
+                      <button
+                        key={index + 1}
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={`px-4 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                          currentPage === index + 1
+                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, pagination.pages))}
+                    disabled={currentPage === pagination.pages}
+                    className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-xl font-bold hover:from-slate-700 hover:to-slate-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
             )}
             </>

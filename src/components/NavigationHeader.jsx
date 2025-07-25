@@ -15,142 +15,145 @@ function NavigationHeader({ currentPage, onNavigate }) {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm relative z-50 sticky top-0">
+    <header className="bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-lg relative z-50 sticky top-0">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           
-          {/* Simple Logo */}
+          {/* Enhanced Logo */}
           <div 
             onClick={() => onNavigate('home')}
             className="flex items-center cursor-pointer group"
           >
-            <h1 className="text-3xl font-black text-gray-800 group-hover:text-purple-600 transition-colors duration-300">
-              <span className="text-purple-600">Poli</span>gap
+            <h1 className="text-3xl font-black bg-gradient-to-r from-slate-800 via-purple-700 to-indigo-700 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:via-indigo-700 group-hover:to-blue-700 transition-all duration-300">
+              Poligap
             </h1>
+            <div className="ml-2 w-2 h-2 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full group-hover:animate-pulse"></div>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Enhanced Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-2">
             <button
               onClick={() => onNavigate('analyzer')}
-              className={`font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
                 currentPage === 'analyzer' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700 hover:shadow-md'
               }`}
             >
-              Analyzer
+              🔍 Analyzer
             </button>
             <button
               onClick={() => onNavigate('generator')}
-              className={`font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
                 currentPage === 'generator' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md'
               }`}
             >
-              Generator
+              ⚡ Generator
             </button>
             <button
               onClick={() => onNavigate('history')}
-              className={`font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
                 currentPage === 'history' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 hover:shadow-md'
               }`}
             >
-              History
-            </button>
-            <button
-              onClick={() => onNavigate('pricing')}
-              className={`font-semibold transition-colors ${
-                currentPage === 'pricing' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
-              }`}
-            >
-              Pricing
-            </button>
-            <button
-              onClick={() => onNavigate('compliances')}
-              className={`font-semibold transition-colors ${
-                currentPage === 'compliances' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
-              }`}
-            >
-              Learn
+              📊 History
             </button>
             <button
               onClick={() => onNavigate('assessment')}
-              className={`font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
                 currentPage === 'assessment' 
-                  ? 'text-purple-600' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-orange-50 hover:text-orange-700 hover:shadow-md'
               }`}
             >
-              Assessment
+              🛡️ Assessment
+            </button>
+            <button
+              onClick={() => onNavigate('compliances')}
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
+                currentPage === 'compliances' 
+                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-pink-50 hover:text-pink-700 hover:shadow-md'
+              }`}
+            >
+              📚 Learn
+            </button>
+            <button
+              onClick={() => onNavigate('pricing')}
+              className={`px-4 py-2 rounded-xl font-bold transition-all duration-300 transform hover:-translate-y-0.5 ${
+                currentPage === 'pricing' 
+                  ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-lg' 
+                  : 'text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 hover:shadow-md'
+              }`}
+            >
+              💰 Pricing
             </button>
           </nav>
 
-          {/* User Actions */}
+          {/* Enhanced User Actions */}
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="relative">
-                {/* Simple Account Button */}
+                {/* Enhanced Account Button */}
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="group flex items-center space-x-3 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-300 shadow-md hover:shadow-lg"
+                  className="group flex items-center space-x-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
-                  <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                    <span className="text-sm font-bold">
+                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30 shadow-inner">
+                    <span className="font-black text-lg">
                       {user.user_metadata?.first_name?.charAt(0) || user.email?.charAt(0) || '?'}
                     </span>
                   </div>
                   <span className="hidden sm:inline">
                     {user.user_metadata?.first_name || 'Account'}
                   </span>
-                  <span className="text-sm">▼</span>
+                  <span className="text-sm transform group-hover:rotate-180 transition-transform duration-300">▼</span>
                 </button>
 
-                {/* Simple User Dropdown Menu */}
+                {/* Enhanced User Dropdown Menu */}
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-3 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-lg font-bold text-gray-800">
+                  <div className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/30 py-3 z-50 transform animate-in slide-in-from-top-2 duration-300">
+                    <div className="px-6 py-4 border-b border-gray-200/50">
+                      <p className="text-xl font-black bg-gradient-to-r from-slate-800 to-purple-700 bg-clip-text text-transparent">
                         {user.user_metadata?.full_name || 'User'}
                       </p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
+                      <p className="text-sm text-gray-600 font-medium mt-1">{user.email}</p>
                     </div>
                     
-                    <button
-                      onClick={() => {
-                        onNavigate('profile');
-                        setShowUserMenu(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2"
-                    >
-                      <span>👤</span>
-                      <span>My Profile</span>
-                    </button>
+                    <div className="p-2">
+                      <button
+                        onClick={() => {
+                          onNavigate('profile');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 hover:text-purple-700 transition-all duration-200 rounded-xl font-medium flex items-center space-x-3 group"
+                      >
+                        <span className="text-xl group-hover:scale-110 transition-transform duration-200">👤</span>
+                        <span>My Profile</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => {
+                          onNavigate('monitor');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 transition-all duration-200 rounded-xl font-medium flex items-center space-x-3 group"
+                      >
+                        <span className="text-xl group-hover:scale-110 transition-transform duration-200">📊</span>
+                        <span>Compliance Monitor</span>
+                      </button>
+                    </div>
                     
-                    <button
-                      onClick={() => {
-                        onNavigate('monitor');
-                        setShowUserMenu(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2"
-                    >
-                      <span>📊</span>
-                      <span>Compliance Monitor</span>
-                    </button>
-                    
-                    <div className="border-t border-gray-100 mt-1 pt-1">
+                    <div className="border-t border-gray-200/50 mt-1 pt-2 px-2">
                       <button
                         onClick={handleSignOut}
-                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200 flex items-center space-x-2"
+                        className="w-full text-left px-4 py-3 text-red-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-700 transition-all duration-200 rounded-xl font-medium flex items-center space-x-3 group"
                       >
-                        <span>🚪</span>
+                        <span className="text-xl group-hover:scale-110 transition-transform duration-200">🚪</span>
                         <span>Sign Out</span>
                       </button>
                     </div>
@@ -161,15 +164,18 @@ function NavigationHeader({ currentPage, onNavigate }) {
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => onNavigate('login')}
-                  className="text-gray-700 font-semibold hover:text-purple-600 transition-colors"
+                  className="text-gray-700 font-bold hover:text-purple-700 transition-colors duration-300 px-4 py-2 rounded-xl hover:bg-purple-50 transform hover:-translate-y-0.5"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => onNavigate('login')}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors shadow-md"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
-                  Get Started
+                  <span className="flex items-center space-x-2">
+                    <span>🚀</span>
+                    <span>Get Started</span>
+                  </span>
                 </button>
               </div>
             )}
